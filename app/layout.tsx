@@ -11,7 +11,7 @@ const _geistMono = Geist_Mono({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Mobil MES - Manufacturing Execution System',
   description: 'Professional MES platform for oil and lubricant manufacturing operations',
-  generator: 'v0.app',
+  generator: 'Uttam Innovative Solution Pvt. Ltd.',
 }
 
 export default function RootLayout({
