@@ -22,6 +22,7 @@ import BatchTraceability from '@/components/modules/batch-traceability'
 import QualityManagement from '@/components/modules/quality-management'
 import FillingPacking from '@/components/modules/filling-packing'
 import KPIDashboard from '@/components/modules/kpi-dashboard'
+import RecipeManagement from '@/components/modules/recipe-management'
 
 type ModuleType = 'dashboard' | 'planning' | 'blending' | 'traceability' | 'qc' | 'filling' | 'kpi'
 
@@ -85,9 +86,8 @@ interface SubMenuTab {
 const subMenuTabs: Record<ModuleType, SubMenuTab[]> = {
   dashboard: [],
   planning: [
+    { id: 'recipes', label: 'Recipe Management' },
     { id: 'create', label: 'Batch Creation' },
-    { id: 'schedule', label: 'Production Schedule' },
-    { id: 'history', label: 'Batch History' },
   ],
   blending: [],
   traceability: [],
@@ -99,13 +99,16 @@ const subMenuTabs: Record<ModuleType, SubMenuTab[]> = {
 export default function Page() {
   const [activeModule, setActiveModule] = useState<ModuleType>('dashboard')
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [activeSubTab, setActiveSubTab] = useState<string>('create')
+  const [activeSubTab, setActiveSubTab] = useState<string>('recipes')
 
   const accessibleItems = navItems.filter(item => item.roles.includes(currentUser.role))
 
   const renderModule = () => {
     switch (activeModule) {
       case 'planning':
+        if (activeSubTab === 'recipes') {
+          return <RecipeManagement />
+        }
         return <ProductionPlanning />
       case 'blending':
         return <BlendingControl />
@@ -147,7 +150,7 @@ export default function Page() {
               key={item.id}
               onClick={() => {
                 setActiveModule(item.id)
-                setActiveSubTab('create')
+                setActiveSubTab(item.id === 'planning' ? 'recipes' : 'create')
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                 activeModule === item.id
